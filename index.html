@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>My Page</title>
+    <style>
+      /* Style for the main container */
+      .container {
+        display: flex;
+        height: 100vh;
+      }
+
+      /* Style for the left side toolbar */
+      .left-toolbar {
+        display: none;
+        background-color: #f1f1f1;
+        width: 200px;
+        overflow-y: auto;
+      }
+
+      .left-toolbar a {
+        display: block;
+        padding: 16px;
+        text-decoration: none;
+        color: #000;
+      }
+
+      /* Style for the content area */
+      .content {
+        flex: 1;
+        padding: 20px;
+      }
+
+      /* Style for the top navigation bar */
+      .topnav {
+        background-color: #333;
+        color: #fff;
+        padding: 14px 16px;
+      }
+
+      .topnav a {
+        margin-right: 10px;
+        text-decoration: none;
+        color: #fff;
+      }
+
+      #doc {
+        float: left;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="left-toolbar">
+        <!--a href="#">Item 1</a>
+        <a href="#">Item 2</a>
+        <a href="#">Item 3</a-->
+      </div>
+
+      <div class="content">
+        <div class="topnav">
+          <a href="#" id="myButton">Next</a>
+          <!-- <a href="#" id="carrierButton">Carrier</a> -->
+          <a href="#" id="traneButton">Trane</a>
+        </div>
+
+        <iframe
+          src="https://www.example.com"
+          width="49%"
+          height="100%"
+          id="doc"
+        ></iframe>
+
+        <iframe
+          src="https://www.example.com"
+          width="49%"
+          height="100%"
+          id="frame"
+        ></iframe>
+      </div>
+    </div>
+
+    <script>
+      const { ipcRenderer } = require("electron");
+
+      // Synchronous message emmiter and handler
+      console.log(ipcRenderer.sendSync("synchronous-message", "sync ping"));
+
+      document.getElementById("myButton").addEventListener("click", () => {
+        document.getElementById("myButton").hidden = true;
+        console.log("click");
+        ipcRenderer.send("event", "myButton clicked");
+      });
+
+      // document.getElementById("carrierButton").addEventListener("click", () => {
+      //   console.log("carrier");
+      //   ipcRenderer.send("set-collection", "carrier");
+      // });
+
+      document.getElementById("traneButton").addEventListener("click", () => {
+        console.log("trane");
+        ipcRenderer.send("set-collection", "trane");
+      });
+
+      // Async message handler
+      ipcRenderer.on("asynchronous-reply", (event, arg) => {
+        console.log(arg);
+      });
+
+      ipcRenderer.on("write-content", (event, arg) => {
+        document.getElementById("myButton").hidden = false;
+        document.getElementById("frame").srcdoc = arg;
+      });
+
+      ipcRenderer.on("write-doc", (event, arg) => {
+        document.getElementById("doc").srcdoc = arg;
+      });
+
+      // Async message sender
+      ipcRenderer.send("asynchronous-message", "async ping");
+    </script>
+  </body>
+</html>
