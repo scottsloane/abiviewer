@@ -45,7 +45,8 @@ function createWindow() {
     mainWindow = null;
   });
 
-  mainWindow.webContents.openDevTools();
+  // if(config.)
+  // mainWindow.webContents.openDevTools();
 }
 
 app.on("window-all-closed", function () {

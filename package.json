@@ -7,6 +7,7 @@
     "start": "electron .",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
+    "build": "npx electron-packager --overwrite .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
